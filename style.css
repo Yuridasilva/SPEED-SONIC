@@ -1,0 +1,64 @@
+/* Reseta o estilo padrão do navegador */
+body, h1, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive ;
+}
+
+/* Oculta o elemento <audio> e remove seu tamanho da tela */
+audio {
+    background-color: transparent;
+    position: absolute; /* Remove o elemento da área visível */
+    width: 1000px;           /* Reduz a largura a zero */
+    height: 0;          /* Reduz a altura a zero */
+    overflow: hidden;   /* Oculta qualquer conteúdo excedente */
+    opacity: 0;         /* Torna o elemento invisível */
+    z-index: -1;        /* Coloca o elemento atrás de outros conteúdos */
+    display: none;
+}
+
+/* Estilo geral do body */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(img/inicio.gif);
+    background-size: cover; /* Faz a imagem cobrir toda a área da tela */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Evita que a imagem se repita */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0; /* Remove margens padrão do body */
+}
+
+
+/* Estilo do contêiner do menu */
+.menu-container {
+    text-align: center;
+}
+
+/* Estilo do título do menu */
+.menu-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Estilo dos botões */
+.menu-container button {
+    background-color: #3c33ec;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo dos botões ao passar o mouse */
+.menu-container button:hover {
+    background-color: #0a218a;
+}

@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+/* Oculta o elemento <audio> e remove seu tamanho da tela */
+audio {
+    position: absolute; /* Remove o elemento da área visível */
+    width: 1000px;           /* Reduz a largura a zero */
+    height: 0;          /* Reduz a altura a zero */
+    overflow: hidden;   /* Oculta qualquer conteúdo excedente */
+    opacity: 0;         /* Torna o elemento invisível */
+    z-index: -1;        /* Coloca o elemento atrás de outros conteúdos */
+}
+
+section img{
+    width: 100px;
+    height: 100px;
+
+}
+
+/* caixa geral */
+.game-board {
+    width: 100%;
+    height: 900px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background-image: url(img/paisagem1.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover; /* Alterado para cobrir toda a tela */
+}
+
+.grama {
+    width: 100%;
+    border-radius: 0 0 15px 15px;
+    position: relative;
+    background-repeat: repeat-y;
+    background-size: contain;
+}
+
+    /* obstaculo */
+.robo{
+    position: absolute;
+    bottom: 0;
+    width: 150px;
+    height: 110px;
+    animation: robo-animations 3.0s infinite linear;
+}
+
+.robo2 {
+    position: absolute;
+    width: 150px;
+    height: 110px;
+    left: 500px; /* Ajuste conforme necessário */
+    top: 790px;  /* Ajuste conforme necessário */
+
+}
+   /* o corredor  */
+.sonic{
+    width: 130px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.arvores {
+    position: absolute;
+    bottom: 0;
+    width: 1000px;
+    animation: arvore-animacao 5s infinite linear;
+}
+
+/* responsavel pular */
+.jump{
+    animation: sonic-animation 500ms cubic-bezier(0.55, 0.06, 0.68, 0.19);
+    
+}
+
+/* tails na nuvem */
+.cloud{
+    width: 300px;
+    position: absolute;
+    animation: cloud 15s infinite linear;
+}
+
+/* tela de game over */
+.game-over{
+    visibility: hidden;
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+    background-image: url(img/game-over.jpg );
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
+.restart{
+    height: 60px;
+    width: 350px;
+    border-radius: 10px;
+    border: none;
+    font-size: 20px;
+    background-color: blue;
+    cursor: pointer;
+    margin-bottom: -340px;
+}
+
+.restart:hover{
+    background-color: rgb(4, 4, 114);
+    color: aliceblue;
+}
+
+@keyframes robo-animations {
+    from{
+        right: -80px;
+    }
+
+    to{
+        right: 100%;
+    }
+}
+
+@keyframes sonic-animation{
+    0%{
+        bottom: 0;
+    }
+
+    40%{
+        bottom: 120px
+    }
+
+    50%{
+        bottom: 120px;
+    }
+
+    60%{
+        bottom: 120px
+    }
+
+    100%{
+        bottom: 0px
+    }
+}
+
+@keyframes arvore-animacao {
+    from {
+        right: -600px;
+    }
+
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes cloud {
+    from{
+        right: -550px;
+    }
+
+    to{
+        right: 100%  
+    }
+}
+
+@media (max-width: 620px) {
+    .game-board {
+        height: 600px; /* Reduz a altura para telas menores */
+        border-bottom: 30px solid rgba(8, 214, 8, 0.692); /* Reduz a espessura da borda */
+    }
+    .restart {
+        margin-bottom: -240px; /* Ajusta a margem inferior do botão de reinício para telas menores */
+    }
+    .sonic {
+        width: 110px; /* Reduz o tamanho do Sonic para telas menores */
+    }
+    .robo {
+        width: 50px; /* Reduz o tamanho do robô para telas menores */
+        animation-duration: 7s; /* Ajusta a duração da animação para telas menores */
+    }
+}
