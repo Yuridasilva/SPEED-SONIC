@@ -27,7 +27,7 @@ section img{
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    background-image: url(img/paisagem1.jpg);
+    background-image: linear-gradient(to top, rgb(125, 129, 245), rgb(32, 2, 117));
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover; /* Alterado para cobrir toda a tela */
@@ -46,7 +46,7 @@ section img{
     position: absolute;
     bottom: 0;
     width: 150px;
-    height: 110px;
+    height: 90px;
     animation: robo-animations 3.0s infinite linear;
 }
 
