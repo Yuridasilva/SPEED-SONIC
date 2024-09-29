@@ -8,21 +8,45 @@
     <title>Menu do Jogo</title>
 </head>
 <body>
+    <nav>
 
     
     <audio autoplay="autoplay" controls="controls" id="bg-audio">
         <source src="audio/08-Sonic-2-Music-Emerald-Hill-Zone-(1-player).mp3" type="audio/mp3"/>
         
         </audio>
+    </nav>
+
+       <main>
     <div class="menu-container">
 
         <div class="modal-inicio show">
             <div class="message-inicio">
-                <h2>Para iniciar o jogo</h2>
-                <h2>Pressione a tecla de <a href="sonic.html">espaço</a> ou  <a href="sonic.html">clique</a> na tela.</h2>
+                <img src="img/sonic dançando.gif" alt="" srcset="">
+
+                <h1>Bem Vindo ao jogo do Sonic</h1>
+                <h2>Para iniciar o game, clique no botão abaixo:</h2><br>
+                <button id="start-button">Iniciar Jogo</button><br>
+
+                <button id="settings-button">Configurações</button>
+
+<div id="settings-menu" class="hidden">
+    <h2>Configurações</h2>
+    <label for="volume">Volume:</label>
+    <input type="range" id="volume" min="0" max="100" value="50">
+    <button id="close-settings">Fechar</button>
+    <div id="loading-message" class="hidden">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+</div>
+                
             </div>
         </div>
-
-    <script src="script.js"></script>
+        </div>
+    </main>
+        
+    <script src="script/script-index.js"></script>
 </body>
 </html>
