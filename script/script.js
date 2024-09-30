@@ -1,15 +1,16 @@
 const sonic = document.querySelector('.sonic');
 const gameOver = document.querySelector('.game-over');
 const robo = document.querySelector('.robo');
-const robo2 = document.querySelector('.robo2');
 const restartButton = document.querySelector('.restart');
 const cloud = document.querySelector('.cloud');
-const gameBoard = document.querySelector('.game-board'); // Div que contém a imagem de fundo do jogo
-
-
+const gameBoard = document.querySelector('.game-board');
+const bgAudio = document.getElementById('bg-audio'); // Seleciona o áudio de fundo
 
 let jumpCount = 0; // Contador de pulos
+let isGameOver = false; // Controla o estado do jogo
+let isJumping = false; // Controla se o Sonic está pulando
 let currentBackgroundIndex = 0; // Índice da imagem de fundo atual
+
 const backgroundImages = [
     'url("img/paisagem1.jpg")',
     'url("img/paisagem7.gif")',
@@ -20,91 +21,74 @@ const backgroundImages = [
     'url("img/paisagem7.gif")',
     'url("img/paisagem8.jpg")',
     'url("img/paisagem10.gif")',
-
-    // Adicione quantas imagens de fundo desejar
 ];
 
-// Lista de imagens do Sonic
 const sonicImages = [
-    'img/jump.gif',
-    'img/jump1.gif',
-    // Adicione quantas imagens do Sonic desejar
+    'img/jump.gif'
 ];
 
-// Função para mudar a imagem de fundo do jogo
 const changeBackground = () => {
     gameBoard.style.backgroundImage = backgroundImages[currentBackgroundIndex];
 }
 
-// Função para verificar se o contador atingiu um múltiplo de 10 e mudar o fundo, se necessário
 const checkBackgroundChange = () => {
     if (jumpCount % 10 === 0 && jumpCount > 0) {
-        // Aumenta a velocidade do robô
         increaseRobotSpeed();
-
-        // Atualiza o índice da imagem de fundo
         currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
-        // Muda a imagem de fundo
         changeBackground();
     }
 
-    // Verifica se pulou 30 vezes para alterar a imagem do robô e do Sonic
     if (jumpCount === 30) {
         changeSonicImage();
-        changeRobotImage();
         jumpCount = 0; // Reinicia o contador de pulos
     }
 }
 
-// Função para aumentar a velocidade do robô
+const changeRobotImage = () => {
+    robo.src = 'img/shadow.gif'; // Altere para o caminho da imagem do Shadow
+}
+
 const increaseRobotSpeed = () => {
-    // Aumenta a velocidade do robô aqui, por exemplo:
     const currentAnimation = window.getComputedStyle(robo).animationDuration;
     const currentDuration = parseFloat(currentAnimation);
     const newDuration = currentDuration * 0.8; // Diminui a duração em 20%
     robo.style.animationDuration = `${newDuration}s`;
 }
 
-// Função para alterar a imagem do Sonic
 const changeSonicImage = () => {
-    // Seleciona aleatoriamente uma imagem do Sonic
     sonic.src = sonicImages[Math.floor(Math.random() * sonicImages.length)];
-    // Volta para a imagem de corrida após 0.5s
     setTimeout(() => {
-        sonic.src = 'img/sonic2.gif'; // Assumindo que 'img/sonic2.gif' é a imagem de corrida
+        sonic.src = 'img/sonic2.gif'; // Imagem de corrida
     }, 500);
-}
-
-const increaseRobotSize = () => {
-    robo.style.width = '150px';  // Ajuste o tamanho conforme necessário
-    robo.style.height = '150px'; // Ajuste o tamanho conforme necessário
-};
-
-// Função para alterar a imagem do robô
-const changeRobotImage = () => {
-    // Lógica para trocar a imagem do robô
-    // Por exemplo:
-    robo.src = 'img/shadow.gif'; // Altere para o caminho da nova imagem do robô
-    increaseRobotSize(); // Aumenta o tamanho quando a imagem muda
 }
 
 const jump = () => {
+    if (isGameOver || isJumping) return; // Não permite pular se o jogo estiver acabado ou se já estiver pulando
+    isJumping = true; // Marca que o Sonic está pulando
     sonic.classList.add('jump');
     setTimeout(() => {
         sonic.classList.remove('jump');
+        isJumping = false; // Permite pular novamente após o pulo
     }, 500);
-    // Incrementa o contador de pulos
     jumpCount++;
-    // Verifica se é necessário mudar o fundo e a imagem do robô e do Sonic
     checkBackgroundChange();
-    // Altera a imagem do Sonic
     changeSonicImage();
 }
 
+const handleGameOver = () => {
+    isGameOver = true; // Para o jogo
+    bgAudio.pause(); // Para a música de fundo
+    robo.style.animation = 'none';
+    sonic.src = 'img/game-over.png';
+    gameOver.style.visibility = 'visible';
+    const gameOverText = document.querySelector('.game-over-text');
+    gameOverText.style.visibility = 'visible'; // Torna o texto visível
+}
 const loop = setInterval(() => {
     const roboPosition = robo.offsetLeft;
     const sonicPosition = +window.getComputedStyle(sonic).bottom.replace('px', '');
     const cloudPosition = +window.getComputedStyle(cloud).left.replace('px', '');
+    
 
     if (roboPosition <= 100 && roboPosition > 0 && sonicPosition < 60) {
         robo.style.animation = 'none';
@@ -113,8 +97,8 @@ const loop = setInterval(() => {
         sonic.style.animation = 'none';
         sonic.style.bottom = `${sonicPosition}px`;
 
-        sonic.src = 'img/game-over.png';
-        sonic.style.width = '180px';
+        sonic.src = 'img/sonic_dead.png';
+        sonic.style.width = '140px';
         sonic.style.marginLeft = '35px';
 
         cloud.style.animation = 'cloud 20s infinite linear';
@@ -127,10 +111,19 @@ const loop = setInterval(() => {
 });
 
 const restart = () => {
-    location.reload();
+    location.reload(); // Recarrega a página
 }
 
-document.addEventListener('keydown', jump);
-document.addEventListener('touchstart', jump);
-
 restartButton.addEventListener('click', restart);
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'Space' && !isGameOver) {
+        jump();
+    }
+});
+
+// Se quiser manter suporte para toque, você pode adicionar novamente
+// document.addEventListener('touchstart', () => {
+//     if (!isGameOver) {
+//         jump();
+//     }
+// });

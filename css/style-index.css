@@ -188,6 +188,41 @@ body {
     animation: fade 0.5s forwards;
 }
 
+.modal {
+    display: none; /* Oculta o modal por padrão */
+    position: fixed; /* Fixa o modal na tela */
+    z-index: 1; /* Coloca o modal acima do conteúdo */
+    left: 0;
+    top: 0;
+    width: 100%; /* Largura total */
+    height: 100%; /* Altura total */
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto; /* Centraliza o modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Largura do modal */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus, p{
+    color: black;
+    text-decoration: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
 @keyframes fade {
     from {
         opacity: 1;

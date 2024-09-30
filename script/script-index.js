@@ -65,3 +65,11 @@ document.getElementById("start-button").addEventListener("click", function() {
         window.location.href = "sonic.html"; // Redireciona para o jogo
     }, 500); // Tempo deve ser igual ao da animação
 });
+
+document.getElementById('instructions-button').addEventListener('click', function() {
+    document.getElementById('instructions-menu').classList.remove('hidden');
+});
+
+document.getElementById('close-instructions').addEventListener('click', function() {
+    document.getElementById('instructions-menu').classList.add('hidden');
+});
