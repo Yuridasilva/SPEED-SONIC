@@ -5,6 +5,8 @@ const restartButton = document.querySelector('.restart');
 const cloud = document.querySelector('.cloud');
 const gameBoard = document.querySelector('.game-board');
 const bgAudio = document.getElementById('bg-audio');
+const gameOverAudio = document.getElementById('game-over-audio'); // Novo áudio
+const arvores = document.querySelectorAll('.arvores');
 
 let jumpCount = 0; // Contador de pulos
 let isGameOver = false; // Controla o estado do jogo
@@ -25,6 +27,9 @@ const sonicImages = [
     'img/jump.gif'
 ];
 
+// Adicione novos obstáculos
+const obstacles = document.querySelectorAll('.obstacle');
+
 const changeBackground = () => {
     gameBoard.style.backgroundImage = backgroundImages[currentBackgroundIndex];
 }
@@ -35,15 +40,6 @@ const checkBackgroundChange = () => {
         currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
         changeBackground();
     }
-
-    if (jumpCount === 30) {
-        changeSonicImage();
-        jumpCount = 0; // Reinicia o contador de pulos
-    }
-}
-
-const changeRobotImage = () => {
-    robo.src = 'img/shadow.gif'; // Altere para o caminho da imagem do Shadow
 }
 
 const increaseRobotSpeed = () => {
@@ -51,6 +47,14 @@ const increaseRobotSpeed = () => {
     const currentDuration = parseFloat(currentAnimation);
     const newDuration = currentDuration * 0.8; // Diminui a duração em 20%
     robo.style.animationDuration = `${newDuration}s`;
+
+    // Acelera as árvores também
+    arvores.forEach(arvore => {
+        const currentArvoreAnimation = window.getComputedStyle(arvore).animationDuration;
+        const currentArvoreDuration = parseFloat(currentArvoreAnimation);
+        const newArvoreDuration = currentArvoreDuration * 0.8; // Diminui a duração em 20%
+        arvore.style.animationDuration = `${newArvoreDuration}s`;
+    });
 }
 
 const changeSonicImage = () => {
@@ -76,6 +80,7 @@ const jump = () => {
 const handleGameOver = () => {
     isGameOver = true; // Para o jogo
     bgAudio.pause(); // Para a música de fundo
+    gameOverAudio.play(); // Toca o áudio de Game Over
     robo.style.animation = 'none';
     sonic.src = 'img/game-over.png';
     gameOver.style.visibility = 'visible';
@@ -83,19 +88,40 @@ const handleGameOver = () => {
     gameOverText.style.visibility = 'visible'; // Torna o texto visível
 }
 
-const loop = setInterval(() => {
-    const roboPosition = robo.offsetLeft;
-    const sonicPosition = sonic.offsetLeft + 50; // Largura do Sonic
+// Movimentação dos obstáculos
+const moveObstacles = () => {
+    obstacles.forEach(obstacle => {
+        let obstaclePosition = obstacle.offsetLeft;
 
-    // Verifica colisão apenas se Sonic não estiver pulando
+        // Mova o obstáculo para a esquerda
+        if (obstaclePosition <= -50) {
+            obstacle.style.left = `${gameBoard.offsetWidth}px`; // Reseta para a direita
+        } else {
+            obstacle.style.left = `${obstaclePosition - 5}px`; // Mova para a esquerda
+        }
+    });
+};
+
+const loop = setInterval(() => {
+    moveObstacles(); // Chame a função de movimento dos obstáculos
+
+    const roboPosition = robo.offsetLeft;
+    const sonicPosition = sonic.offsetLeft; // Posição do Sonic
+
+    // Verifique a colisão com o robô
     if (!isJumping && sonicPosition >= roboPosition && sonicPosition <= roboPosition + 50) {
         handleGameOver();
     }
 
-    // Lógica existente para Game Over
-    if (roboPosition <= 100 && roboPosition > 0 && sonicPosition < 60) {
-        handleGameOver();
-    }
+    // Verifique a colisão com os obstáculos
+    obstacles.forEach(obstacle => {
+        const obstaclePosition = obstacle.offsetLeft;
+
+        // Ajuste a verificação de colisão
+        if (sonicPosition + 50 >= obstaclePosition && sonicPosition <= obstaclePosition + 50) {
+            handleGameOver(); // Game Over ao colidir com o obstáculo
+        }
+    });
 });
 
 const restart = () => {
@@ -106,20 +132,18 @@ restartButton.addEventListener('click', restart);
 document.addEventListener('keydown', (event) => {
     const sonicPosition = sonic.offsetLeft;
 
+    // Mover para a direita
     if (event.code === 'ArrowRight' && sonicPosition < gameBoard.offsetWidth - 50) {
         sonic.style.left = `${sonicPosition + 10}px`;
-    } else if (event.code === 'ArrowLeft' && sonicPosition > 0) {
+    }
+    
+    // Mover para a esquerda
+    else if (event.code === 'ArrowLeft' && sonicPosition > 0) {
         sonic.style.left = `${sonicPosition - 10}px`;
     }
 
+    // Pular
     if (event.code === 'Space' && !isGameOver) {
         jump();
     }
 });
-
-// Se quiser manter suporte para toque, você pode adicionar novamente
-// document.addEventListener('touchstart', () => {
-//     if (!isGameOver) {
-//         jump();
-//     }
-// });
