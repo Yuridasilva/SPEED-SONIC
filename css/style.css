@@ -4,23 +4,20 @@
     box-sizing: border-box; 
 }
 
-/* Oculta o elemento <audio> e remove seu tamanho da tela */
 audio {
-    position: absolute; /* Remove o elemento da área visível */
-    width: 1000px;           /* Reduz a largura a zero */
-    height: 0;          /* Reduz a altura a zero */
-    overflow: hidden;   /* Oculta qualquer conteúdo excedente */
-    opacity: 0;         /* Torna o elemento invisível */
-    z-index: -1;        /* Coloca o elemento atrás de outros conteúdos */
+    position: absolute;
+    width: 1000px;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    z-index: -1;
 }
 
-section img{
+section img {
     width: 100px;
     height: 100px;
-
 }
 
-/* caixa geral */
 .game-board {
     width: 100%;
     height: 900px;
@@ -30,7 +27,7 @@ section img{
     background-image: linear-gradient(to top, rgb(125, 129, 245), rgb(32, 2, 117));
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-size: cover; /* Alterado para cobrir toda a tela */
+    background-size: cover;
 }
 
 .grama {
@@ -41,8 +38,7 @@ section img{
     background-size: contain;
 }
 
-    /* obstaculo */
-.robo{
+.robo {
     position: absolute;
     bottom: 0;
     width: 150px;
@@ -50,16 +46,7 @@ section img{
     animation: robo-animations 3.0s infinite linear;
 }
 
-.robo2 {
-    position: absolute;
-    width: 150px;
-    height: 110px;
-    left: 500px; /* Ajuste conforme necessário */
-    top: 790px;  /* Ajuste conforme necessário */
-
-}
-   /* o corredor  */
-.sonic{
+.sonic {
     width: 130px;
     position: absolute;
     bottom: 0px;
@@ -72,21 +59,33 @@ section img{
     animation: arvore-animacao 5s infinite linear;
 }
 
-/* responsavel pular */
-.jump{
-    animation: sonic-animation 500ms cubic-bezier(0.55, 0.06, 0.68, 0.19);
-    
+.loop {
+    position: absolute;
+    bottom: 0;
+    width: 1000px; /* Ajuste conforme necessário */
+    animation: loop-animacao 7s infinite linear; /* Duração da animação */
 }
 
-/* tails na nuvem */
-.cloud{
+@keyframes loop-animacao {
+    from {
+        right: -600px; /* Começa fora da tela */
+    }
+    to {
+        right: 100%; /* Move para fora do lado direito */
+    }
+}
+
+.jump {
+    animation: sonic-animation 500ms cubic-bezier(0.55, 0.06, 0.68, 0.19);
+}
+
+.cloud {
     width: 300px;
     position: absolute;
     animation: cloud 15s infinite linear;
 }
 
-/* tela de game over */
-.game-over{
+.game-over {
     visibility: hidden;
     display: flex;
     position: fixed;
@@ -97,9 +96,6 @@ section img{
     left: 0;
     justify-content: center;
     align-items: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: 100% 100%;
 }
 
 .game-over-text {
@@ -108,10 +104,10 @@ section img{
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); 
     margin-bottom: 20px; 
     margin-left: -100px;
-    font-family: 'Press Start 2P', cursive ;
+    font-family: 'Press Start 2P', cursive;
 }
 
-.restart{
+.restart {
     height: 60px;
     width: 350px;
     border-radius: 10px;
@@ -123,41 +119,35 @@ section img{
     margin-left: -380px;
 }
 
-.restart:hover{
+.restart:hover {
     background-color: rgb(4, 4, 114);
     color: aliceblue;
 }
 
-
 @keyframes robo-animations {
-    from{
+    from {
         right: -80px;
     }
-
-    to{
+    to {
         right: 100%;
     }
 }
 
-@keyframes sonic-animation{
-    0%{
+@keyframes sonic-animation {
+    0% {
         bottom: 0;
     }
-
-    40%{
-        bottom: 120px
-    }
-
-    50%{
+    40% {
         bottom: 120px;
     }
-
-    60%{
-        bottom: 120px
+    50% {
+        bottom: 120px;
     }
-
-    100%{
-        bottom: 0px
+    60% {
+        bottom: 120px;
+    }
+    100% {
+        bottom: 0px;
     }
 }
 
@@ -165,35 +155,33 @@ section img{
     from {
         right: -600px;
     }
-
     to {
         right: 100%;
     }
 }
 
 @keyframes cloud {
-    from{
+    from {
         right: -550px;
     }
-
-    to{
-        right: 100%  
+    to {
+        right: 100%;  
     }
 }
 
 @media (max-width: 620px) {
     .game-board {
-        height: 600px; /* Reduz a altura para telas menores */
-        border-bottom: 30px solid rgba(8, 214, 8, 0.692); /* Reduz a espessura da borda */
+        height: 600px;
+        border-bottom: 30px solid rgba(8, 214, 8, 0.692);
     }
     .restart {
-        margin-bottom: -240px; /* Ajusta a margem inferior do botão de reinício para telas menores */
+        margin-bottom: -240px;
     }
     .sonic {
-        width: 110px; /* Reduz o tamanho do Sonic para telas menores */
+        width: 110px;
     }
     .robo {
-        width: 50px; /* Reduz o tamanho do robô para telas menores */
-        animation-duration: 7s; /* Ajusta a duração da animação para telas menores */
+        width: 50px;
+        animation-duration: 7s;
     }
 }

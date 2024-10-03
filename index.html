@@ -9,50 +9,42 @@
 </head>
 <body>
     <nav>
-
-    
-    <audio autoplay="autoplay" controls="controls" id="bg-audio">
-        <source src="audio/08-Sonic-2-Music-Emerald-Hill-Zone-(1-player).mp3" type="audio/mp3"/>
-        
+        <audio autoplay="autoplay" controls="controls" id="bg-audio">
+            <source src="audio/08-Sonic-2-Music-Emerald-Hill-Zone-(1-player).mp3" type="audio/mp3"/>
         </audio>
     </nav>
 
-       <main>
-    <div class="menu-container">
+    <main>
+        <div class="menu-container">
+            <div class="modal-inicio show">
+                <div class="message-inicio">
+                    <img src="img/sonic dançando.gif" alt="" srcset="">
+                    <h1>Bem Vindo ao jogo do Sonic</h1>
+                    <h2>Para iniciar o game, clique no botão abaixo:</h2><br>
+                    <button id="start-button">Iniciar Jogo</button><br>
+                    <button id="settings-button">Configurações</button><br>
+                    <button id="instructions-button">Instruções</button><br>
+                    <button id="exit-button">Sair do Jogo</button> <!-- Botão de Sair -->
 
-        <div class="modal-inicio show">
-            <div class="message-inicio">
-                <img src="img/sonic dançando.gif" alt="" srcset="">
+                    <div id="instructions-menu" class="hidden">
+                        <h2>Instruções do Jogo</h2>
+                        <p>Use as setas do teclado para mover o Sonic.</p>
+                        <p>Pressione a barra de espaço para pular.</p>
+                        <button id="close-instructions">Fechar</button>
+                    </div>
 
-                <h1>Bem Vindo ao jogo do Sonic</h1>
-                <h2>Para iniciar o game, clique no botão abaixo:</h2><br>
-                <button id="start-button">Iniciar Jogo</button><br>
-
-                <button id="settings-button">Configurações</button><br>
-
-                <button id="instructions-button">Instruções</button>
-
-                <div id="instructions-menu" class="hidden">
-    <h2>Instruções do Jogo</h2>
-    <p>Use as setas do teclado para mover o Sonic.</p>
-    <p>Pressione a barra de espaço para pular.</p>
-    <button id="close-instructions">Fechar</button>
-</div>
-
-<div id="settings-menu" class="hidden">
-    <h2>Configurações</h2>
-    <label for="volume">Volume:</label>
-    <input type="range" id="volume" min="0" max="100" value="50">
-    <button id="close-settings">Fechar</button>
-    <div id="loading-message" class="hidden">
-        <div class="spinner"></div>
-        <p>Carregando...</p>
-    </div>
-
-</div>
-                
+                    <div id="settings-menu" class="hidden">
+                        <h2>Configurações</h2>
+                        <label for="volume">Volume:</label>
+                        <input type="range" id="volume" min="0" max="100" value="50">
+                        <button id="close-settings">Fechar</button>
+                        <div id="loading-message" class="hidden">
+                            <div class="spinner"></div>
+                            <p>Carregando...</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
         </div>
     </main>
         
