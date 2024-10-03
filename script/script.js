@@ -22,17 +22,14 @@ const backgroundImages = [
     'url("img/level-2.jpg")',
     'url("img/level-3.jpg")',
     'url("img/level-4.jpg")',
-    'url("img/level-5.gif")',
-    'url("img/level-6.jpg")',
+    'url("img/level-5.jpg")',
+    'url("img/level-6.gif")',
     'url("img/level-7.gif")',
 ];
 
 const sonicImages = [
     'img/jump.gif'
 ];
-
-// Adicionando novos obstáculos
-const obstacles = document.querySelectorAll('.obstacle');
 
 // Função para mudar o fundo do jogo
 const changeBackground = () => {
@@ -93,13 +90,35 @@ const handleGameOver = () => {
     gameOverAudio.play(); // Toca o áudio de Game Over
     robo.style.animation = 'none';
     sonic.src = 'img/game-over.png';
-    gameOver.style.visibility = 'visible';
+
+    // Montar a mensagem "GAME OVER"
     const gameOverText = document.querySelector('.game-over-text');
-    gameOverText.style.visibility = 'visible'; // Torna o texto visível
+    gameOverText.innerHTML = ""; // Limpa qualquer texto anterior
+
+    const message = "GAME OVER";
+    message.split('').forEach((letter, index) => {
+        const span = document.createElement('span');
+        span.textContent = letter;
+        span.classList.add('letter');
+        span.style.animationDelay = `${index * 0.1}s`; // Atraso baseado na posição da letra
+        gameOverText.appendChild(span);
+    });
+
+    gameOver.style.visibility = 'visible'; // Torna a tela de Game Over visível
+    
+    // Parar a animação depois de um tempo
+    setTimeout(() => {
+        const letters = document.querySelectorAll('.letter');
+        letters.forEach(letter => {
+            letter.style.opacity = '1'; // Certifica-se de que as letras fiquem visíveis
+            letter.style.transform = 'none'; // Para as letras na posição final
+        });
+    }, message.length * 100 + 500); // Aguarda a animação terminar e então para
 }
 
 // Função para movimentação dos obstáculos
 const moveObstacles = () => {
+    const obstacles = document.querySelectorAll('.obstacle'); // Adicione esta linha para pegar obstáculos
     obstacles.forEach(obstacle => {
         let obstaclePosition = obstacle.offsetLeft;
 
@@ -125,6 +144,7 @@ const loop = setInterval(() => {
     }
 
     // Verifica a colisão com os obstáculos
+    const obstacles = document.querySelectorAll('.obstacle'); // Adicione esta linha
     obstacles.forEach(obstacle => {
         const obstaclePosition = obstacle.offsetLeft;
 

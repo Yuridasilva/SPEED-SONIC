@@ -62,8 +62,8 @@ section img {
 .loop {
     position: absolute;
     bottom: 0;
-    width: 1000px; /* Ajuste conforme necessário */
-    animation: loop-animacao 7s infinite linear; /* Duração da animação */
+    width: 1000px;
+    animation: loop-animacao 7s infinite linear;
 }
 
 @keyframes loop-animacao {
@@ -86,25 +86,41 @@ section img {
 }
 
 .game-over {
-    visibility: hidden;
+    visibility: hidden; /* Inicialmente escondido */
     display: flex;
     position: fixed;
-    background-color: black;
+    background-color: rgb(0, 0, 0); 
     top: 0;
+    left: 0;
     right: 0;
     bottom: 0;
-    left: 0;
     justify-content: center;
     align-items: center;
-}
-
-.game-over-text {
+    flex-direction: column; /* Para alinhar o texto e o botão */
     font-size: 68px;
     color: red;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); 
-    margin-bottom: 20px; 
-    margin-left: -100px;
     font-family: 'Press Start 2P', cursive;
+}
+
+.letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-100px); /* Começa acima */
+    animation: fall 0.5s forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .restart {
@@ -115,8 +131,6 @@ section img {
     font-size: 20px;
     background-color: blue;
     cursor: pointer;
-    margin-bottom: -340px;
-    margin-left: -380px;
 }
 
 .restart:hover {
