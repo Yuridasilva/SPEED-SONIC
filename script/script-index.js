@@ -1,10 +1,10 @@
-const audio = document.getElementById("bg-audio");
-const startButton = document.getElementById("start-button");
-const settingsButton = document.getElementById("settings-button");
-const closeSettingsButton = document.getElementById("close-settings");
-const volumeControl = document.getElementById("volume");
-const loadingMessage = document.getElementById("loading-message");
-const exitButton = document.getElementById("exit-button");
+const audio = document.getElementById("bg-audio");//configuração do audio
+const startButton = document.getElementById("start-button");// botao de start ao game
+const settingsButton = document.getElementById("settings-button");//configuração dos botões
+const closeSettingsButton = document.getElementById("close-settings");//fecha a o botao responsavel pela configuraçao
+const volumeControl = document.getElementById("volume");//responsavel pelo volume do game 
+const loadingMessage = document.getElementById("loading-message");//tempo de translasão para outro site
+const exitButton = document.getElementById("exit-button");//botao para sair do game
 
 function redirectToGame() {
     // Mostra a mensagem de carregamento e o spinner

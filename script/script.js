@@ -7,15 +7,17 @@ const gameBoard = document.querySelector('.game-board');
 const bgAudio = document.getElementById('bg-audio');
 const gameOverAudio = document.getElementById('game-over-audio');
 const arvores = document.querySelectorAll('.arvores');
+const scoreDisplay = document.querySelector('.score'); // Elemento para exibir a pontuação
+const finalScoreDisplay = document.querySelector('.final-score'); // Elemento para exibir a pontuação final
 
-let jumpCount = 0; // Contador de pulos
-let isGameOver = false; // Controla o estado do jogo
-let isJumping = false; // Controla se o Sonic está pulando
-let currentBackgroundIndex = 0; // Índice da imagem de fundo atual
+let jumpCount = 0; 
+let isGameOver = false; 
+let isJumping = false; 
+let currentBackgroundIndex = 0; 
 
-const sonicRunLeft = 'img/sonic-left.gif'; // Nova imagem do Sonic correndo para a esquerda
-const sonicRunRight = 'img/sonic2.gif'; // Imagem do Sonic correndo para a direita
-let isRunningLeft = false; // Controla se Sonic está correndo para a esquerda
+const sonicRunLeft = 'img/sonic-left.gif'; 
+const sonicRunRight = 'img/sonic2.gif'; 
+let isRunningLeft = false; 
 
 const backgroundImages = [
     'url("img/level-1.jpg")',
@@ -31,12 +33,12 @@ const sonicImages = [
     'img/jump.gif'
 ];
 
-// Função para mudar o fundo do jogo
+let score = 0; // Variável para armazenar a pontuação
+
 const changeBackground = () => {
     gameBoard.style.backgroundImage = backgroundImages[currentBackgroundIndex];
 }
 
-// Função para verificar se é hora de mudar o fundo
 const checkBackgroundChange = () => {
     if (jumpCount % 10 === 0 && jumpCount > 0) {
         increaseRobotSpeed();
@@ -45,154 +47,143 @@ const checkBackgroundChange = () => {
     }
 }
 
-// Função para aumentar a velocidade do robô e das árvores
 const increaseRobotSpeed = () => {
     const currentAnimation = window.getComputedStyle(robo).animationDuration;
     const currentDuration = parseFloat(currentAnimation);
-    const newDuration = currentDuration * 0.8; // Diminui a duração em 20%
+    const newDuration = currentDuration * 0.8; 
     robo.style.animationDuration = `${newDuration}s`;
 
-    // Acelera as árvores também
     arvores.forEach(arvore => {
         const currentArvoreAnimation = window.getComputedStyle(arvore).animationDuration;
         const currentArvoreDuration = parseFloat(currentArvoreAnimation);
-        const newArvoreDuration = currentArvoreDuration * 0.8; // Diminui a duração em 20%
+        const newArvoreDuration = currentArvoreDuration * 0.7; 
         arvore.style.animationDuration = `${newArvoreDuration}s`;
     });
 }
 
-// Função para mudar a imagem do Sonic ao pular
+const updateScore = () => {
+    score++;
+    scoreDisplay.textContent = `Pontuação: ${score}`; // Atualiza a exibição da pontuação
+};
+
 const changeSonicImage = () => {
     sonic.src = sonicImages[Math.floor(Math.random() * sonicImages.length)];
     setTimeout(() => {
-        sonic.src = isRunningLeft ? sonicRunLeft : sonicRunRight; // Retorna à imagem correta após o pulo
+        sonic.src = isRunningLeft ? sonicRunLeft : sonicRunRight;
     }, 500);
 }
 
-// Função de pular
 const jump = () => {
-    if (isGameOver || isJumping) return; // Não permite pular se o jogo estiver acabado ou se já estiver pulando
-    isJumping = true; // Marca que o Sonic está pulando
+    if (isGameOver || isJumping) return; 
+    isJumping = true; 
     sonic.classList.add('jump');
     setTimeout(() => {
         sonic.classList.remove('jump');
-        isJumping = false; // Permite pular novamente após o pulo
+        isJumping = false; 
     }, 500);
     jumpCount++;
     checkBackgroundChange();
     changeSonicImage();
-}
+    updateScore(); // Atualiza a pontuação ao pular
 
-// Função para lidar com o Game Over
+    }
+
 const handleGameOver = () => {
-    isGameOver = true; // Para o jogo
-    bgAudio.pause(); // Para a música de fundo
-    gameOverAudio.play(); // Toca o áudio de Game Over
+    isGameOver = true; 
+    bgAudio.pause(); 
+    gameOverAudio.play(); 
     robo.style.animation = 'none';
-    sonic.src = 'img/game-over.png';
+    sonic.src = '';
 
-    // Montar a mensagem "GAME OVER"
     const gameOverText = document.querySelector('.game-over-text');
-    gameOverText.innerHTML = ""; // Limpa qualquer texto anterior
+    gameOverText.innerHTML = ""; 
 
     const message = "GAME OVER";
     message.split('').forEach((letter, index) => {
         const span = document.createElement('span');
         span.textContent = letter;
         span.classList.add('letter');
-        span.style.animationDelay = `${index * 0.1}s`; // Atraso baseado na posição da letra
+        span.style.animationDelay = `${index * 0.1}s`; 
         gameOverText.appendChild(span);
     });
 
-    gameOver.style.visibility = 'visible'; // Torna a tela de Game Over visível
+    finalScoreDisplay.textContent = `Pontuação Final: ${score}`; // Mostra a pontuação final
+
+    gameOver.style.visibility = 'visible'; 
     
-    // Parar a animação depois de um tempo
     setTimeout(() => {
         const letters = document.querySelectorAll('.letter');
         letters.forEach(letter => {
-            letter.style.opacity = '1'; // Certifica-se de que as letras fiquem visíveis
-            letter.style.transform = 'none'; // Para as letras na posição final
+            letter.style.opacity = '1'; 
+            letter.style.transform = 'none'; 
         });
-    }, message.length * 100 + 500); // Aguarda a animação terminar e então para
+    }, message.length * 100 + 500); 
 }
 
-// Função para movimentação dos obstáculos
 const moveObstacles = () => {
-    const obstacles = document.querySelectorAll('.obstacle'); // Adicione esta linha para pegar obstáculos
+    const obstacles = document.querySelectorAll('.obstacle'); 
     obstacles.forEach(obstacle => {
         let obstaclePosition = obstacle.offsetLeft;
 
-        // Mova o obstáculo para a esquerda
         if (obstaclePosition <= -50) {
-            obstacle.style.left = `${gameBoard.offsetWidth}px`; // Reseta para a direita
+            obstacle.style.left = `${gameBoard.offsetWidth}px`; 
         } else {
-            obstacle.style.left = `${obstaclePosition - 5}px`; // Move para a esquerda
+            obstacle.style.left = `${obstaclePosition - 5}px`; 
         }
     });
 };
 
-// Loop principal do jogo
 const loop = setInterval(() => {
-    moveObstacles(); // Chama a função de movimento dos obstáculos
+    moveObstacles(); 
 
     const roboPosition = robo.offsetLeft;
-    const sonicPosition = sonic.offsetLeft; // Posição do Sonic
+    const sonicPosition = sonic.offsetLeft; 
 
-    // Verifica a colisão com o robô
     if (!isJumping && sonicPosition >= roboPosition && sonicPosition <= roboPosition + 50) {
         handleGameOver();
     }
 
-    // Verifica a colisão com os obstáculos
-    const obstacles = document.querySelectorAll('.obstacle'); // Adicione esta linha
+    const obstacles = document.querySelectorAll('.obstacle'); 
     obstacles.forEach(obstacle => {
         const obstaclePosition = obstacle.offsetLeft;
 
-        // Ajuste a verificação de colisão
         if (sonicPosition + 50 >= obstaclePosition && sonicPosition <= obstaclePosition + 50) {
-            handleGameOver(); // Game Over ao colidir com o obstáculo
+            handleGameOver(); 
         }
     });
 });
 
-// Função para reiniciar o jogo
 const restart = () => {
-    location.reload(); // Recarrega a página
+    score = 0; // Reseta a pontuação
+    scoreDisplay.textContent = 'Pontuação: 0'; // Reseta a exibição da pontuação
+    location.reload(); 
 }
 
-// Evento para o botão de reinício
 restartButton.addEventListener('click', restart);
 
-// Evento para movimentar o Sonic com as teclas
 document.addEventListener('keydown', (event) => {
     const sonicPosition = sonic.offsetLeft;
 
-    // Mover para a direita
     if (event.code === 'ArrowRight' && sonicPosition < gameBoard.offsetWidth - 50) {
-        sonic.src = sonicRunRight; // Altera a imagem para correr para a direita
+        sonic.src = sonicRunRight; 
         sonic.style.left = `${sonicPosition + 10}px`;
-        sonic.style.bottom = '0px'; // Garante que Sonic esteja no chão
-    }
-
-    // Mover para a esquerda
-    else if (event.code === 'ArrowLeft' && sonicPosition > 0) {
-        sonic.src = sonicRunLeft; // Altera a imagem para correr para a esquerda
+        sonic.style.bottom = '0px'; 
+    } else if (event.code === 'ArrowLeft' && sonicPosition > 0) {
+        sonic.src = sonicRunLeft; 
         sonic.style.left = `${sonicPosition - 10}px`;
-        sonic.style.bottom = '-15px'; // Garante que Sonic esteja no chão
-        isRunningLeft = true; // Marca que Sonic está correndo para a esquerda
+        sonic.style.bottom = '-15px'; 
+        isRunningLeft = true; 
     }
 
-    // Pular
     if (event.code === 'Space' && !isGameOver) {
         jump();
     }
 });
 
-// Evento para soltar a tecla
 document.addEventListener('keyup', (event) => {
     if (event.code === 'ArrowLeft') {
-        sonic.src = sonicRunRight; // Retorna a imagem do Sonic para a corrida normal
-        isRunningLeft = false; // Marca que Sonic não está mais correndo para a esquerda
-        sonic.style.bottom = '0px'; // Garante que Sonic esteja no chão
+        sonic.src = sonicRunRight; 
+        isRunningLeft = false; 
+        sonic.style.bottom = '0px'; 
     }
 });
